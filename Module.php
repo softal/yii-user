@@ -1,64 +1,86 @@
 <?php
 namespace softal\user;
-
 use yii\base\Module as BaseModule;
 
-/**
- * This is the main module class for the Yii2-user.
- * @author Alek
- */
 class Module extends BaseModule
 {
     const VERSION = '0.1.1-dev';
 
     /** Email is changed right after user enter's new email address. */
     const STRATEGY_INSECURE = 0;
-
     /** Email is changed after user clicks confirmation link sent to his new email address. */
     const STRATEGY_DEFAULT = 1;
-
     /** Email is changed after user clicks both confirmation links sent to his old and new email addresses. */
     const STRATEGY_SECURE = 2;
 
-    /** @var bool Whether to show flash messages. */
     public $enableFlashMessages = true;
-
-    /** @var bool Whether to enable registration. */
     public $enableRegistration = true;
-
     /** @var bool Whether to remove password field from registration form. */
     public $enableGeneratingPassword = false;
-
     /** @var bool Whether user has to confirm his account. */
     public $enableConfirmation = true;
-
     /** @var bool Whether to allow logging in without confirmation. */
     public $enableUnconfirmedLogin = false;
-
-    /** @var bool Whether to enable password recovery. */
     public $enablePasswordRecovery = true;
-
-    /** @var integer Email changing strategy. */
     public $emailChangeStrategy = self::STRATEGY_DEFAULT;
-
-    /** @var int The time you want the user will be remembered without asking for credentials. */
-    public $rememberFor = 1209600; // two weeks
-
-    /** @var int The time before a confirmation token becomes invalid. */
+    public $rememberFor = 1209600; // two weeks rememberMeDuration
     public $confirmWithin = 86400; // 24 hours
-
-    /** @var int The time before a recovery token becomes invalid. */
     public $recoverWithin = 21600; // 6 hours
-
-    /** @var int Cost parameter used by the Blowfish hash algorithm. */
+    public $wrongAttempts = false; // integer|bool, the number of consecutive wrong logins attempts, defaults to `false`. If set to `0` or `false`, the account
     public $cost = 10;
+    public $passwordTimeout = 30; // 30 days
+    //loginRedirectUrl  string|array, the default url to redirect after login. Normally the last return url will be used. This setting will only be used if no return url is found.
+    //logoutRedirectUrl string|array, the default url to redirect after logout. If not set, it will redirect to home page.
+    /**
+     * @var array the settings for the password in the module. The following options can be set"
+     * - validateStrength: array|boolean, the list of forms where password strength will be validated. If
+     *   set to `false` or an empty array, no strength will be validated. The strength will be validated
+     *   using `\kartik\password\StrengthValidator`. Defaults to `[self::UI_INSTALL, self::UI_REGISTER, Module::UI_RESET]`.
+     * - strengthRules: array, the strength validation rules as required by `\kartik\password\StrengthValidator`
+     * - strengthMeter: array|boolean, the list of forms where password strength meter will be displayed.
+     *   If set to `false` or an empty array, no strength meter will be displayed.  Defaults to
+     *   `[self::UI_INSTALL, self::UI_REGISTER, Module::UI_RESET]`.
+     * - activationKeyExpiry: integer|bool, the time in seconds after which the account activation key/token will expire.
+     *   Defaults to 3600*24*2 seconds (2 days). If set to `0` or `false`, the key never expires.
+     * - resetKeyExpiry: integer|bool, the time in seconds after which the password reset key/token will expire.
+     *   Defaults to 3600*24*2 seconds (2 days). If set to `0` or `false`, the key never expires.
+     * - passwordExpiry: integer|bool, the timeout in seconds after which user is required to reset his password
+     *   after logging in. Defaults to `false`. If set to `0` or `false`, the password never expires.
+     * - enableRecovery: bool, whether password recovery is permitted. If set to `true`, users will be given an option
+     *   to reset/recover a lost password. Defaults to `true`.
+     * 
+     */
+    public $passwordSettings = [
+        'validateStrength' => [self::UI_INSTALL, self::UI_REGISTER, Module::UI_RESET],
+            'strengthRules' => [
+                'min' => 6,
+                'upper' => 0,
+                'lower' => 0,
+                'digit' => 0,
+                'special' => 0,
+                'hasUser' => true,
+                'hasEmail' => true
+            ],
+            'strengthMeter' => [self::UI_INSTALL, self::UI_REGISTER, Module::UI_RESET],
+            'activationKeyExpiry' => 172800,
+            'resetKeyExpiry' => 172800,
+            'passwordExpiry' => false,
+            'wrongAttempts' => false,
+            'enableRecovery' => true
+    ];
+    /**
+     * @var array Set of rules to measure the password strength when choosing new password in the registration or recovery forms.
+     * Rules should NOT include attribute name, it will be added when they are used.
+     * If null, defaults to minimum 8 characters and at least one of each: lower and upper case character and a digit.
+     * @see BasePasswordForm
+     */
+    public $passwordStrengthRules;
 
+    
     /** @var array An array of administrator's usernames. */
     public $admins = [];
-
     /** @var array Mailer configuration */
     public $mailer = [];
-
     /** @var array Model map */
     public $modelMap = [];
 
@@ -86,43 +108,7 @@ class Module extends BaseModule
     */
     public $now;
     
-    /**
-     * @var array the login settings for the module. The following options can be set:
-     * - loginType: integer, whether users can login with their username, email address, or both.
-     *   Defaults to `Module::LOGIN_BOTH`.
-     * - rememberMeDuration: integer, the duration in seconds for which user will remain logged in on his/her client
-     *   using cookies. Defaults to 3600*24*1 seconds (30 days).
-     * - wrongAttempts: integer|bool, the number of consecutive wrong password type attempts, at login, after which
-     *   the account is inactivated and needs to be reset. Defaults to `false`. If set to `0` or `false`, the account
-     *   is never inactivated after any wrong password attempts.
-     * - loginRedirectUrl: string|array, the default url to redirect after login. Normally the last return
-     *   url will be used. This setting will only be used if no return url is found.
-     * - logoutRedirectUrl: string|array, the default url to redirect after logout. If not set, it will redirect
-     *   to home page.
-     * @see `setConfig()` method for the default settings
-     */
-    public $loginSettings = [];
-    
-    /**
-     * @var array the settings for the password in the module. The following options can be set"
-     * - validateStrength: array|boolean, the list of forms where password strength will be validated. If
-     *   set to `false` or an empty array, no strength will be validated. The strength will be validated
-     *   using `\kartik\password\StrengthValidator`. Defaults to `[self::UI_INSTALL, self::UI_REGISTER, Module::UI_RESET]`.
-     * - strengthRules: array, the strength validation rules as required by `\kartik\password\StrengthValidator`
-     * - strengthMeter: array|boolean, the list of forms where password strength meter will be displayed.
-     *   If set to `false` or an empty array, no strength meter will be displayed.  Defaults to
-     *   `[self::UI_INSTALL, self::UI_REGISTER, Module::UI_RESET]`.
-     * - activationKeyExpiry: integer|bool, the time in seconds after which the account activation key/token will expire.
-     *   Defaults to 3600*24*2 seconds (2 days). If set to `0` or `false`, the key never expires.
-     * - resetKeyExpiry: integer|bool, the time in seconds after which the password reset key/token will expire.
-     *   Defaults to 3600*24*2 seconds (2 days). If set to `0` or `false`, the key never expires.
-     * - passwordExpiry: integer|bool, the timeout in seconds after which user is required to reset his password
-     *   after logging in. Defaults to `false`. If set to `0` or `false`, the password never expires.
-     * - enableRecovery: bool, whether password recovery is permitted. If set to `true`, users will be given an option
-     *   to reset/recover a lost password. Defaults to `true`.
-     * @see `setConfig()` method for the default settings
-     */
-    public $passwordSettings = [];
+
     
      /**
      * Initialize the module
