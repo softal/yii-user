@@ -83,6 +83,14 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * @return bool Whether the user is blocked or not.
+     */
+    public function getIsLocked()
+    {
+        return $this->blocked_at != null;
+    }
+    
+    /**
      * @return bool Whether the user is an admin or not.
      */
     public function getIsAdmin()

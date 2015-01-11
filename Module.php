@@ -15,6 +15,7 @@ class Module extends BaseModule
 
     public $enableFlashMessages = true;
     public $enableRegistration = true;
+    public $enableRegistrationCaptcha = false;
     /** @var bool Whether to remove password field from registration form. */
     public $enableGeneratingPassword = false;
     /** @var bool Whether user has to confirm his account. */
@@ -26,9 +27,9 @@ class Module extends BaseModule
     public $rememberFor = 1209600; // two weeks rememberMeDuration
     public $confirmWithin = 86400; // 24 hours
     public $recoverWithin = 21600; // 6 hours
-    public $wrongAttempts = false; // integer|bool, the number of consecutive wrong logins attempts, defaults to `false`. If set to `0` or `false`, the account
-    public $cost = 10;
     public $passwordTimeout = 30; // the timeout in days after which user is required to reset his password. If set to `0` or `false`, the pwd never expires.
+    public $failedLoginAttempts = 3; // integer|bool (false), the number of consecutive wrong password type attempts, at login, after which captha will be displayed
+    public $cost = 10;
     
     //loginRedirectUrl  string|array, the default url to redirect after login. Normally the last return url will be used. This setting will only be used if no return url is found.
     //logoutRedirectUrl string|array, the default url to redirect after logout. If not set, it will redirect to home page. 

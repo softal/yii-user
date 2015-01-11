@@ -19,6 +19,8 @@ class Bootstrap implements BootstrapInterface
         'SettingsForm'     => 'softal\user\models\SettingsForm',
         'RecoveryForm'     => 'softal\user\models\RecoveryForm',
         'UserSearch'       => 'softal\user\models\UserSearch',
+        'UserPasswordHistory'    => 'softal\user\models\UserPasswordHistory',
+        'UserLoginHistory'       => 'softal\user\models\UserLoginHistory',
     ];
 
     /** @inheritdoc */
