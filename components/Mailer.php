@@ -1,5 +1,5 @@
 <?php
-namespace softal\user;
+namespace softal\user\components;
 
 use softal\user\models\Token;
 use softal\user\models\User;

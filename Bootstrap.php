@@ -4,6 +4,7 @@ namespace softal\user;
 use yii\base\BootstrapInterface;
 use yii\web\GroupUrlRule;
 use yii\console\Application as ConsoleApplication;
+//use app\modules\components\Finder;
 
 class Bootstrap implements BootstrapInterface
 {
@@ -40,11 +41,11 @@ class Bootstrap implements BootstrapInterface
                     });
                 }
             }
-            \Yii::$container->setSingleton(Finder::className(), [
+            \Yii::$container->setSingleton(components\Finder::className(), [
                 'userQuery'    => \Yii::$container->get('UserQuery'),
                 'profileQuery' => \Yii::$container->get('ProfileQuery'),
                 'tokenQuery'   => \Yii::$container->get('TokenQuery'),
-                'accountQuery' => \Yii::$container->get('AccountQuery'),
+                // 'accountQuery' => \Yii::$container->get('AccountQuery'),
             ]);
             \Yii::$container->set('yii\web\User', [
                 'enableAutoLogin' => true,

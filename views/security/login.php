@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use softal\user\widgets\Connect;
+use yii\captcha\Captcha;
 
 /**
  * @var yii\web\View                    $this
@@ -24,11 +25,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="panel-body">
                 <?php $form = ActiveForm::begin([
                     'id'                     => 'login-form',
-                    'enableAjaxValidation'   => true,
-                    'enableClientValidation' => false,
-                    'validateOnBlur'         => false,
-                    'validateOnType'         => false,
-                    'validateOnChange'       => false,
+                    // 'enableAjaxValidation'   => true,
+                    // 'enableClientValidation' => false,
+                    // 'validateOnBlur'         => false,
+                    // 'validateOnType'         => false,
+                    // 'validateOnChange'       => false,
                 ]) ?>
 
                 <?= $form->field($model, 'login', ['inputOptions' => ['autofocus' => 'autofocus', 'class' => 'form-control', 'tabindex' => '1']]) ?>
@@ -38,7 +39,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'rememberMe')->checkbox(['tabindex' => '4']) ?>
 
                 <?php if ($model->scenario == 'captcha'): ?>
-                        <?= $form->field($model, 'captcha')->widget(Captcha::className(), ['options' => ['class' => 'form-control'],]) ?>
+                        <?= $form->field($model, 'captcha')->widget(Captcha::className(), [
+							'captchaAction' => 'captcha',
+							//'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-9">{input}</div></div>',
+							'imageOptions' => ['height' => 35],
+							'options' => ['class' => 'form-control'],
+						]) ?>
                 <?php endif; ?>
                 
                 <?= Html::submitButton(Yii::t('user', 'Sign in'), ['class' => 'btn btn-primary btn-block', 'tabindex' => '3']) ?>

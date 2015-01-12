@@ -1,7 +1,7 @@
 <?php
 namespace softal\user\models;
 
-use softal\user\Finder;
+use softal\user\components\Finder;
 use softal\user\helpers\Password;
 use softal\user\components\Mailer;
 use softal\user\Module;

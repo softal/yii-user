@@ -29,7 +29,7 @@ class SecurityController extends Controller
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
-                    ['allow' => true, 'actions' => ['login', 'auth'], 'roles' => ['?']],
+                    ['allow' => true, 'actions' => ['login', 'auth', 'captcha'], 'roles' => ['?']],
                     ['allow' => true, 'actions' => ['logout'], 'roles' => ['@']],
                 ]
             ],
@@ -93,15 +93,19 @@ class SecurityController extends Controller
     private function isCaptchaRequired()
     {
         $allowedattepts = $this->module->failedLoginAttempts;
-        return $allowedattepts > getLoginAttempts();
+        $loginAttepts = $this->getLoginAttempts();
+        if ($allowedattepts > 0)
+            return $loginAttepts >= $allowedattepts;
+        
+        return false;
     }
     private function getLoginAttempts()
     {
-        Yii::$app->getSession()->get($this->loginAttemptsVar, -1);
+        return \Yii::$app->getSession()->get($this->loginAttemptsVar, -1);
     }
     private function setLoginAttempts($value)
     {
-        Yii::$app->getSession()->set($this->loginAttemptsVar, $value);
+        \Yii::$app->getSession()->set($this->loginAttemptsVar, $value);
     }
 
     /**

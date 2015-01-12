@@ -1,5 +1,6 @@
 <?php
 namespace softal\user\models;
+
 use yii\db\ActiveRecord;
 
 /**

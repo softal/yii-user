@@ -1,7 +1,7 @@
 <?php
 namespace softal\user\models;
 
-use softal\user\Finder;
+use softal\user\components\Finder;
 use yii\base\Model;
 use yii\captcha\Captcha;
 use softal\user\helpers\Password;

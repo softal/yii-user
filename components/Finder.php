@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace dektrium\user;
+namespace softal\user\components;
 
 use yii\base\Object;
 use yii\db\ActiveQuery;
