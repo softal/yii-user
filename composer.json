@@ -1,5 +1,5 @@
 {
-    "name": "softal/yii2-user",
+    "name": "softal/yii-user",
     "description": "User registration and authentication module for Yii2",
     "keywords": ["yii2", "yii2-user", "user management", "softal"],
     "type": "yii2-extension",
