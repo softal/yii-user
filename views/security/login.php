@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     // 'enableClientValidation' => false,
                     // 'validateOnBlur'         => false,
                     // 'validateOnType'         => false,
-                    // 'validateOnChange'       => false,
+                    // 'validateOnChange'       => false, hh
                 ]) ?>
 
                 <?= $form->field($model, 'login', ['inputOptions' => ['autofocus' => 'autofocus', 'class' => 'form-control', 'tabindex' => '1']]) ?>
