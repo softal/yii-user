@@ -1,13 +1,13 @@
 {
     "name": "softal/yii-user",
     "description": "User registration and authentication module for Yii2",
-    "keywords": ["yii2", "yii2-user", "user management", "softal"],
-    "type": "yii2-extension",
+    "keywords": ["yii", "yii-user", "user management", "softal"],
+    "type": "yii-extension",
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/softal/yii2-user/issues?state=open",
-        "forum": "https://gitter.im/softal/yii2-user",
-        "source": "https://github.com/softal/yii2-user"
+        "issues": "https://github.com/softal/yii-user/issues?state=open",
+        "forum": "https://gitter.im/softal/yii-user",
+        "source": "https://github.com/softal/yii-user"
     },
     "authors": [
         {
@@ -35,7 +35,7 @@
     "extra": {
         "bootstrap": "softal\\user\\Bootstrap",
         "branch-alias": {
-            "dev-master": "0.9.x-dev",
+            "dev-master": "1.0.0-dev",
             "dev-develop": "1.0.x-dev"
         },
         "asset-installer-paths": {
